@@ -1,0 +1,20 @@
+##########################
+# Jetbrains Ignore files #
+##########################
+.idea/
+.pytest_cache/
+
+#######################
+# Python Ignore files #
+#######################
+__pycache__/
+.ipynb_checkpoints/
+
+#################
+# Course       #
+#################
+ppt/
+text-contents/
+*.pdf
+*.PDF
+*.key
