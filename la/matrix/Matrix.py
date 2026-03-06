@@ -4,7 +4,67 @@ class Matrix:
     def __init__(self, lst2d):
         self._values = [row[:] for row in lst2d]
 
-    def col_vector(self, index):
+    @classmethod
+    def zero(cls, r, c):
+        """返回一个r行c列的零矩阵"""
+        return cls([0] * c for _ in range(r))
+
+    def __add__(self, another):
+        """返回两个矩阵的加法结果"""
+        assert self.shape() == another.shape(), \
+            "Error in adding. Shape of matrix must be same."
+        return Matrix([[a + b for a, b in zip(self.row_vector(i), another.row_vector(i))] 
+                       for i in range(self.row_num())])
+
+    def __sub__(self, another):
+        """返回两个矩阵的加法结果"""
+        assert self.shape() == another.shape(), \
+            "Error in adding. Shape of matrix must be same."
+        return Matrix([[a - b for a, b in zip(self.row_vector(i), another.row_vector(i))] 
+                       for i in range(self.row_num())])
+
+    def T(self):
+        """返回矩阵的转置矩阵"""
+        return Matrix([[ e for e in self.col_vector(i)] for i in range(self.col_num())])
+
+    def dot(self, another):
+        """返回矩阵乘法的结果"""
+        if isinstance(another, Vector):
+            # 矩阵和向量的乘法
+            assert self.col_num() == len(another), \
+                 "Error in Matrix-Vector Multiplication."
+            return Vector([self.row_vector(i).dot(another) for i in range(self.row_num())])
+            
+
+        if isinstance(another, Matrix):
+            # 矩阵和矩阵的乘法
+            assert self.col_num() == another.row_num(), \
+                "Error in Matrix-Matrix Multiplication."
+            return Matrix([[self.row_vector(i).dot(another.col_vector(j)) for j in range(another.col_num())] 
+                           for i in range(self.row_num())])
+
+
+    def __mul__(self, k):
+        """返回矩阵的数量乘结果: self * k"""
+        return Matrix([[e * k for e in self.row_vector(i)] for i in range(self.row_num())])
+
+    def __rmul__(self, k):
+        """返回矩阵的数量乘结果: k * self"""
+        return self * k
+
+    def __truediv__(self, k):
+        """返回数量除法的结果矩阵：self / k"""
+        return (1 / k) * self
+
+    def __pos__(self):
+        """返回矩阵取正结果"""
+        return 1 * self._values
+    
+    def __neg__(self):
+        """返回矩阵取负结果"""
+        return -1 * self._values
+
+    def row_vector(self, index):
         """返回矩阵的第index个行向量"""
         return Vector(self._values[index])
 
