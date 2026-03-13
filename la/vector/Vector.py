@@ -27,6 +27,10 @@ class Vector:
             "Error in dot product. Length of vectors must be same."
         return sum(a * b for a, b in zip(self, another))
 
+    def underlying_list(self):
+        """返回向量的底层列表，需要返回一个新的列表"""
+        return self._values[:]
+
     def __add__(self, another):
         """向量加法，返回结果向量"""
         assert len(self) == len(another), \
