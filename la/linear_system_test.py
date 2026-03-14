@@ -45,3 +45,33 @@ if __name__ == "__main__":
     ls6.gauss_jordan_elimination()
     ls6.fancy_print()
     print()
+
+    A7 = Matrix([[1, -1, 2, 0, 3],
+                 [-1, 1, 0, 2, -5],
+                 [1, -1, 4, 2, 4],
+                 [-2, 2, -5, -1, -3]])
+    b7 = Vector([1, 5, 13, -1])
+    ls7 = LinearSystem(A7, b7)
+    ls7.gauss_jordan_elimination()
+    ls7.fancy_print()
+    print()
+
+    A8 = Matrix([[2, 2],
+                 [2, 1],
+                 [1, 2]])
+    b8 = Vector([3, 2.5, 7])
+    ls8 = LinearSystem(A8, b8)
+    if not ls8.gauss_jordan_elimination():
+        print("No Solution!")
+    ls8.fancy_print()
+    print()
+
+    A9 = Matrix([[2, 0, 1],
+                 [-1, -1, -2],
+                 [-3, 0, 1]])
+    b9 = Vector([1, 0, 0])
+    ls9 = LinearSystem(A9, b9)
+    if not ls9.gauss_jordan_elimination():
+        print("No Solution!")
+    ls9.fancy_print()
+    print()
