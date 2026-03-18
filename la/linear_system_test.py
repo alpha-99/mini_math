@@ -1,6 +1,7 @@
 from vector.Vector import Vector
 from matrix.Matrix import Matrix
 from linearsystem.LinearSystem import LinearSystem
+from linearsystem.LinearSystem import inv
 
 if __name__ == "__main__":
 
@@ -75,3 +76,9 @@ if __name__ == "__main__":
         print("No Solution!")
     ls9.fancy_print()
     print()
+
+    A = Matrix([[1, 2], [3, 4]])
+    invA = inv(A)
+    print(invA)
+    print(A.dot(invA))
+    print(invA.dot(A))

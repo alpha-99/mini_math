@@ -12,7 +12,7 @@ from vector._globals import is_zero
 class LinearSystem:
     """
     A: 系数矩阵
-    b: 结果向量
+    b: 结果向量或结果矩阵
     """
     def __init__(self, A, b):
         assert A.row_num() == len(b), "row number of A must be equal to the length of b"
@@ -20,7 +20,13 @@ class LinearSystem:
         self._n = A.col_num()
         # assert self._m == self._n # TODO: no this restriction，一般的gauss jordan不一定m和n相等
 
-        self.Ab = [Vector(A.row_vector(i).underlying_list() + [b[i]]) for i in range(self._m)]
+        if isinstance(b, Vector):
+            self.Ab = [Vector(A.row_vector(i).underlying_list() + [b[i]]) for i in range(self._m)]
+        
+        if isinstance(b, Matrix):
+            self.Ab = [Vector(A.row_vector(i).underlying_list() + b.row_vector(i).underlying_list())
+                       for i in range(self._m)]
+
         self.pivots = [] # pivots用于存储主元的列
 
     def _max_row(self, index_i, index_j, n):
@@ -80,3 +86,16 @@ class LinearSystem:
         for i in range(self._m):
             print(" ".join(str(self.Ab[i][j]) for j in range(self._n)), end=" ")
             print("|", self.Ab[i][-1])
+
+def inv(A):
+    """求解矩阵的逆，A为方阵"""
+    if A.row_num() != A.col_num():
+        return None
+    
+    n = A.row_num()
+    ls = LinearSystem(A, Matrix.identity(n))
+    if not ls.gauss_jordan_elimination():
+        return None
+    
+    invA = [[row[i] for i in range(n, 2 * n)] for row in ls.Ab]
+    return Matrix(invA)       
