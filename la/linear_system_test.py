@@ -1,7 +1,7 @@
 from vector.Vector import Vector
 from matrix.Matrix import Matrix
 from linearsystem.LinearSystem import LinearSystem
-from linearsystem.LinearSystem import inv
+from linearsystem.LinearSystem import inv, rank
 
 if __name__ == "__main__":
 
@@ -44,6 +44,8 @@ if __name__ == "__main__":
     b6 = Vector([3, -1, 8])
     ls6 = LinearSystem(A6, b6)
     ls6.gauss_jordan_elimination()
+
+    print("A6")
     ls6.fancy_print()
     print()
 
@@ -54,6 +56,8 @@ if __name__ == "__main__":
     b7 = Vector([1, 5, 13, -1])
     ls7 = LinearSystem(A7, b7)
     ls7.gauss_jordan_elimination()
+
+    print("A7")
     ls7.fancy_print()
     print()
 
@@ -64,6 +68,8 @@ if __name__ == "__main__":
     ls8 = LinearSystem(A8, b8)
     if not ls8.gauss_jordan_elimination():
         print("No Solution!")
+    
+    print("A8")
     ls8.fancy_print()
     print()
 
@@ -74,6 +80,8 @@ if __name__ == "__main__":
     ls9 = LinearSystem(A9, b9)
     if not ls9.gauss_jordan_elimination():
         print("No Solution!")
+    
+    print("A9")
     ls9.fancy_print()
     print()
 
@@ -82,3 +90,7 @@ if __name__ == "__main__":
     print(invA)
     print(A.dot(invA))
     print(invA.dot(A))
+
+    print("rank A8 = {}".format(rank(A8))) # 2
+    print("rank A7 = {}".format(rank(A7))) # 3
+    print("rank A6 = {}".format(rank(A6))) # 3

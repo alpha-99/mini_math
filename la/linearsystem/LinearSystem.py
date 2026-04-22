@@ -14,12 +14,14 @@ class LinearSystem:
     A: 系数矩阵
     b: 结果向量或结果矩阵
     """
-    def __init__(self, A, b):
-        assert A.row_num() == len(b), "row number of A must be equal to the length of b"
+    def __init__(self, A, b=None):
+        assert b is None or A.row_num() == len(b), "row number of A must be equal to the length of b"
         self._m = A.row_num()
         self._n = A.col_num()
         # assert self._m == self._n # TODO: no this restriction，一般的gauss jordan不一定m和n相等
 
+        if b is None:
+            self.Ab = [A.row_vector(i) for i in range(self._m)]
         if isinstance(b, Vector):
             self.Ab = [Vector(A.row_vector(i).underlying_list() + [b[i]]) for i in range(self._m)]
         
@@ -98,4 +100,13 @@ def inv(A):
         return None
     
     invA = [[row[i] for i in range(n, 2 * n)] for row in ls.Ab]
-    return Matrix(invA)       
+    return Matrix(invA)
+
+def rank(A):
+    """求解矩阵的秩"""
+    ls = LinearSystem(A)
+    ls.gauss_jordan_elimination()
+
+    # 每行有多少个元素，有col_num个元素
+    zero = Vector.zero(A.col_num())
+    return sum([row != zero for row in ls.Ab])

@@ -1,5 +1,5 @@
 import math
-from ._globals import EPSILON
+from ._globals import EPSILON, is_equal
 
 class Vector:
     def __init__(self, lst):
@@ -65,6 +65,17 @@ class Vector:
         """返回向量取负的结果向量"""
         return -1 * self
     
+    def __eq__(self, other):
+        """判断两个向量是否相等"""
+        other_list = other.underlying_list()
+        if len(self._values) != len(other_list):
+            return False
+        return all(is_equal(a, b) for a, b in zip(self._values, other_list))
+
+    def __neq__(self, other):
+        """判断两个向量是否不相等"""
+        return not(self == other)
+
     def __getitem__(self, index):
         """取向量的第index个元素"""
         return self._values[index]
